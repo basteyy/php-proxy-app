@@ -1,89 +1,112 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-<title>PHP-Proxy</title>
-
-<meta name="generator" content="php-proxy.com">
-<meta name="version" content="<?=$version;?>">
-
-<style type="text/css">
-html body {
-	font-family: Arial,Helvetica,sans-serif;
-	font-size: 12px;
-}
-
-#container {
-	width:500px;
-	margin:0 auto;
-	margin-top:150px;
-}
-
-#error {
-	color:red;
-	font-weight:bold;
-}
-
-#frm {
-	padding:10px 15px;
-	background-color:#FFC8C8;
-	
-	border:1px solid #818181;
-	
-	-webkit-border-radius: 8px;
-	-moz-border-radius: 8px;
-	border-radius: 8px;
-}
-
-#footer {
-	text-align:center;
-	font-size:10px;
-	margin-top:35px;
-	clear:both;
-}
-</style>
-
+    <title>PHP-Proxy</title>
+    <meta name="generator" content="php-proxy.com">
+    <meta name="version" content="<?= $version; ?>">
+    <link rel="stylesheet" href="https://classless.de/classless.css">
 </head>
 
 <body>
 
+<nav>
+    <ul>
+        <li>
+            <strong>PHP-Proxy</strong>
+        </li>
+        <li><a href="index.php">Home </a></li>
+        <li><a href="#">More ▾</a>
+            <ul>
+                <li><a href="https://github.com/Athlon1600/php-proxy-app" target="_blank" title="Visit PHP-Proxy Project on GitHub">GitHub</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
 
-<div id="container">
+<main>
+    <?php
+    if (isset($error_msg)) { ?>
+        <blockquote class="warn">
+            <p><b>⚠ Warning</b></p>
+            <p>
+                <?= strip_tags($error_msg) ?>
+            </p>
+        </blockquote>
+    <?php
+    } ?>
 
-	<div style="text-align:center;">
-		<h1 style="color:blue;">PHP-Proxy</h1>
-	</div>
-	
-	<?php if(isset($error_msg)){ ?>
-	
-	<div id="error">
-		<p><?php echo strip_tags($error_msg); ?></p>
-	</div>
-	
-	<?php } ?>
-	
-	<div id="frm">
-	
-	<!-- I wouldn't touch this part -->
-	
-		<form action="index.php" method="post" style="margin-bottom:0;">
-			<input name="url" type="text" style="width:400px;" autocomplete="off" placeholder="http://" />
-			<input type="submit" value="Go" />
-		</form>
-		
-		<script type="text/javascript">
-			document.getElementsByName("url")[0].focus();
-		</script>
-		
-	<!-- [END] -->
-	
-	</div>
-	
-</div>
 
-<div id="footer">
-	Powered by <a href="//www.php-proxy.com/" target="_blank">PHP-Proxy</a> <?php echo $version; ?>
-</div>
+    <!-- I wouldn't touch this part -->
+
+    <form action="index.php" method="post">
+
+        <div class="row">
+            <div class="col">
+                <input name="url" type="url" autocomplete="off" placeholder="https://" required />
+
+                <div>
+                    <input id="new_tab" type="checkbox" value="yes">
+                    <label for="new_tab">In new Tab</label>
+                </div>
+
+            </div>
+            <div class="col-2">
+                <input type="submit" value="Go"/>
+            </div>
+        </div>
+
+
+
+    </form>
+
+    <script type="text/javascript">
+
+        const form = document.querySelector('form');
+
+        /**
+         * Autofocus the URL Form
+         */
+        document.querySelector('input[type="url"').focus();
+
+        /**
+         * New Tab?
+         */
+        form.addEventListener('submit', function (evt) {
+            evt.preventDefault();
+
+            if (form.querySelector('input#new_tab').checked) {
+                // New Tab
+                form.setAttribute('target', '_blank');
+            } else {
+                form.setAttribute('target', '_self');
+            }
+
+
+            form.submit();
+        }, true)
+    </script>
+
+    <!-- [END] -->
+
+    <h2>
+        Mini F.A.Q.
+    </h2>
+
+    <details>
+        <summary>What is the PHP-Proxy?</summary>
+        <p>
+            Web proxy application project powered by PHP-Proxy library
+        </p>
+    </details>
+
+
+</main>
+
+<footer>
+    <p class="text-right">
+        Powered by <a href="//www.php-proxy.com/" target="_blank">PHP-Proxy <?= $version ?> </a> (PHP <?= PHP_VERSION ?>)
+    </p>
+</footer>
 
 
 </body>

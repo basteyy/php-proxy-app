@@ -4,3 +4,5 @@ composer.lock
 .htaccess
 .idea
 composer.json
+demo.html
+.ddev
