@@ -1,12 +1,26 @@
 <?php
 
-define('PROXY_START', microtime(true));
+declare(strict_types=1);
 
-require("vendor/autoload.php");
-
+use Narrowspark\HttpEmitter\SapiEmitter;
 use Proxy\Config;
 use Proxy\Http\Request;
 use Proxy\Proxy;
+use ProxyApp\Controller\FormController;
+
++
+
+define('PROXY_START', microtime(true));
+
+if (!defined('ROOT')) {
+    define('ROOT', __DIR__);
+}
+
+if (!file_exists(ROOT . '/vendor/autoload.php')) {
+    die('Make sure you perform the `composer update` command.');
+}
+
+include ROOT . '/vendor/autoload.php';
 
 if (!function_exists('curl_version')) {
     die("cURL extension is not loaded!");
@@ -43,93 +57,46 @@ if (Config::get('session_enable')) {
     session_write_close();
 }
 
-// form submit in progress...
-if (isset($_POST['url'])) {
+$request = (new \Kraber\Http\Factory\ServerRequestFactory())->createServerRequest(
+    method: $_SERVER['REQUEST_METHOD'],
+    uri: ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'],
+    serverParams: $_SERVER
+);
 
-    $url = $_POST['url'];
-    $url = add_http($url);
-
-    header("HTTP/1.1 302 Found");
-    header('Location: ' . proxify_url($url));
-    exit;
-
-} elseif (!isset($_GET['q'])) {
-
-    // must be at homepage - should we redirect somewhere else?
-    if (Config::get('index_redirect')) {
-
-        // redirect to...
-        header("HTTP/1.1 302 Found");
-        header("Location: " . Config::get('index_redirect'));
-
-    } else {
-        echo render_template("./templates/main.php", array('version' => Proxy::VERSION));
-    }
-
-    exit;
-}
-
-// decode q parameter to get the real URL
-$url = url_decrypt($_GET['q']);
-
-$proxy = new Proxy();
-
-// load plugins
-foreach (Config::get('plugins', array()) as $plugin) {
-
-    $plugin_class = $plugin . 'Plugin';
-
-    if (file_exists('./plugins/' . $plugin_class . '.php')) {
-
-        // use user plugin from /plugins/
-        require_once('./plugins/' . $plugin_class . '.php');
-
-    } elseif (class_exists('\\Proxy\\Plugin\\' . $plugin_class)) {
-
-        // does the native plugin from php-proxy package with such name exist?
-        $plugin_class = '\\Proxy\\Plugin\\' . $plugin_class;
-    }
-
-    // otherwise plugin_class better be loaded already through composer.json and match namespace exactly \\Vendor\\Plugin\\SuperPlugin
-    // $proxy->getEventDispatcher()->addSubscriber(new $plugin_class());
-
-    $proxy->addSubscriber(new $plugin_class());
-}
 
 try {
+// form submit in progress...
+    if (isset($_POST['url'])) {
 
-    // request sent to index.php
-    $request = Request::createFromGlobals();
+        $url = $_POST['url'];
+        $url = add_http($url);
 
-    // remove all GET parameters such as ?q=
-    $request->get->clear();
-
-    // forward it to some other URL
-    $response = $proxy->forward($request, $url);
-
-    // if that was a streaming response, then everything was already sent and script will be killed before it even reaches this line
-    $response->send();
-
-} catch (Exception $ex) {
-
-    // if the site is on server2.proxy.com then you may wish to redirect it back to proxy.com
-    if (Config::get("error_redirect")) {
-
-        $url = render_string(Config::get("error_redirect"), array(
-            'error_msg' => rawurlencode($ex->getMessage())
-        ));
-
-        // Cannot modify header information - headers already sent
         header("HTTP/1.1 302 Found");
-        header("Location: {$url}");
+        header('Location: ' . proxify_url($url));
+        exit;
+
+    } elseif (!isset($_GET['q'])) {
+
+        // must be at homepage - should we redirect somewhere else?
+        if (Config::get('index_redirect')) {
+
+            // redirect to...
+            header("HTTP/1.1 302 Found");
+            header("Location: " . Config::get('index_redirect'));
+
+        } else {
+            (new SapiEmitter())->emit(
+                (new FormController($request))()
+            );
+        }
 
     } else {
 
-        echo render_template("./templates/main.php", array(
-            'url' => $url,
-            'error_msg' => $ex->getMessage(),
-            'version' => Proxy::VERSION
-        ));
+        (new SapiEmitter())->emit(
+            (new \ProxyApp\Controller\RunProxyController($request))()
+        );
 
     }
+
+} catch (\ProxyApp\Exceptions\TemplateMissingException $e) {
 }

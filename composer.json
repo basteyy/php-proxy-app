@@ -14,6 +14,7 @@
   "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
+      "ProxyApp\\": "src",
       "Proxy\\": "php-proxy/src/"
     },
     "files": [
@@ -23,7 +24,9 @@
   "require": {
     "athlon1600/php-proxy-plugin-bundle": "dev-master",
     "predis/predis": "v1.1.x-dev",
-    "ext-curl": "*"
+    "ext-curl": "*",
+    "fpisani/kraber-http": "dev-main",
+    "narrowspark/http-emitter": "2.0.x-dev"
   },
   "scripts": {
     "post-create-project-cmd": [
