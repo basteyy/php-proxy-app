@@ -1,4 +1,12 @@
 <?php
+/**
+ * PHP-Proxy-App
+ *
+ * Web Proxy Application built on php-proxy library ready to be installed on your server
+ * @see https://github.com/Athlon1600/php-proxy-app
+ * @license MIT
+ * @author https://github.com/Athlon1600/php-proxy-app/graphs/contributors
+ */
 
 declare(strict_types=1);
 
@@ -6,7 +14,6 @@ namespace ProxyApp\Controller;
 
 use Exception;
 use Kraber\Http\Message\Response;
-use Predis\Protocol\Text\Handler\StatusResponse;
 use Proxy\Config;
 use Proxy\Http\Request;
 use Proxy\Proxy;

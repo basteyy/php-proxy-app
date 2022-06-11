@@ -45,7 +45,7 @@ https://www.php-proxy.com/download/php-proxy.zip
 
 ## Keep it up-to-date
 
-Application itself rarely will change, vast majority of changes will be done to its requirement packages like php-proxy. Simply call this command once in a while to make sure your proxy is always using the latest versions.
+Application itself rarely will change, the vast majority of changes will be done to its requirement packages like php-proxy. Simply call this command once in a while to make sure your proxy is always using the latest versions.
 
 ```
 composer update
@@ -55,10 +55,10 @@ composer update
 
 This file will be loaded into the global Config class.
 
-#### /templates/
+#### /src/Templates/
 
 This should have been named "views", but for historic purposes we keep it named as templates for now.
 
-#### /plugins/
+#### /src/Plugins/
 
 PHP-Proxy provides many of its own native plugins, but users are free to write their own custom plugins, which could then be automatically loaded from this very folder. See /plugins/TestPlugin.php for an example.

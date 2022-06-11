@@ -10,8 +10,16 @@
 
 declare(strict_types=1);
 
-namespace ProxyApp\Exceptions;
+namespace ProxyApp\Plugins;
 
-class TemplateMissingException extends \Exception {
+use Proxy\Event\ProxyEvent;
+use Proxy\Plugin\AbstractPlugin;
+use ProxyApp\Plugins\Interfaces\ProxyPluginInterface;
 
+class PortalPlugin extends AbstractPlugin implements ProxyPluginInterface
+{
+    public function onCompleted(ProxyEvent $event)
+    {
+
+    }
 }

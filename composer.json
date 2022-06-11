@@ -15,18 +15,23 @@
   "autoload": {
     "psr-4": {
       "ProxyApp\\": "src",
-      "Proxy\\": "php-proxy/src/"
+      "Proxy\\": "athlon1600/php-proxy/src/"
     },
     "files": [
-      "php-proxy/src/helpers.php"
+      "athlon1600/php-proxy/src/helpers.php",
+      "athlon1600/php-proxy-plugin-bundle/src/utils.php"
     ]
   },
   "require": {
-    "athlon1600/php-proxy-plugin-bundle": "dev-master",
     "predis/predis": "v1.1.x-dev",
     "ext-curl": "*",
     "fpisani/kraber-http": "dev-main",
-    "narrowspark/http-emitter": "2.0.x-dev"
+    "narrowspark/http-emitter": "2.0.x-dev",
+    "vlucas/phpdotenv": "5.4.x-dev"
+  },
+  "require-dev": {
+    "basteyy/various-php-snippets": "dev-master",
+    "filp/whoops": ">=2.14.5"
   },
   "scripts": {
     "post-create-project-cmd": [

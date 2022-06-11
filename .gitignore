@@ -6,3 +6,5 @@ composer.lock
 composer.json
 demo.html
 .ddev
+.env
+athlon1600/
