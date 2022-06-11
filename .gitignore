@@ -1,10 +1,17 @@
-/vendor/*
-/storage/*
-composer.lock
-.htaccess
-.idea
-composer.json
-demo.html
-.ddev
-.env
+# Ignore Development Things
+.idea/
+.ddev/
 athlon1600/
+demo.html
+composer.lock
+composer.json
+
+# Ignore PHP Vendors
+vendor/
+
+# Ignore the running .env-File
+.env
+
+# Ignore other stuff
+storage/
+.htaccess
