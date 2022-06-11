@@ -17,7 +17,6 @@ use Proxy\Config;
 use ProxyApp\Controller\FormController;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
-use function basteyy\VariousPhpSnippets\varDebug;
 
 define('PROXY_START', microtime(true));
 
@@ -108,7 +107,7 @@ try {
 
 } catch (\Exception|\Error $exception) {
 
-    if (Config::get('DEBUG', true)) {
+    if (Config::get('DEBUG', false)) {
 
         if(class_exists(Run::class)) {
             ((new Run())->pushHandler(new PrettyPageHandler()))->handleException($exception);
@@ -124,6 +123,6 @@ try {
     } else {
         http_response_code(500);
         header("Content-Type: text/plain");
-        echo 'Internal error, please try again later';
+        echo 'Internal error, please try again later.' . PHP_EOL . PHP_EOL . 'If you run the application, make sure you run the setup successfully.' . PHP_EOL . PHP_EOL . 'PHP-Proxy-App 2022';
     }
 }

@@ -62,3 +62,20 @@ This should have been named "views", but for historic purposes we keep it named 
 #### /src/Plugins/
 
 PHP-Proxy provides many of its own native plugins, but users are free to write their own custom plugins, which could then be automatically loaded from this very folder. See /plugins/TestPlugin.php for an example.
+
+## Shell Commands
+
+For setup the portal, you can use the Setup-Script to change the config. The script should be performed by default the time you setup it with composer. You can regenerate the 
+setup with the following composer command: `composer run-script PhpProxyAppSetupForce`
+
+### Command Options
+
+You can add a few options to the shell script: `composer run-script PhpProxyAppSetupForce -- --command --command2 --command3`
+
+Options:
+* `--regenerate_keys` Regenerate all keys
+* `--debug:off|on` Turn debug mode off or on
+* `--expose:off|on` Turn expose php mode off or on
+
+Full command example, which turns debug and expose mode on:
+`composer run-script PhpProxyAppSetupForce -- --debug:on --expose:on`

@@ -35,7 +35,11 @@
   },
   "scripts": {
     "post-create-project-cmd": [
-      "php -f setup.txt"
+      "ProxyApp\\bin\\Setup::run"
+    ],
+
+    "PhpProxyAppSetupForce" : [
+      "ProxyApp\\bin\\Setup::run"
     ]
   }
 }

@@ -10,5 +10,8 @@
 
 declare(strict_types=1);
 
+/** Force Debug Mode (overwrites config in .env) */
+const DEBUG = true;
+
 /** Route the request to the bootstrap-file */
 include 'src/Boostrap.php';
